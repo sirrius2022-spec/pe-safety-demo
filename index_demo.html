@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="건설안전PE"/>
+<meta name="theme-color" content="#0b1f3a"/>
+<title>건설안전기술사 | 데모 버전</title>
+<style>
+:root{
+  --bg:#0b1f3a;
+  --bg2:#0f2a4a;
+  --card:#132d52;
+  --card2:#1a3a68;
+  --accent:#e8a020;
+  --accent2:#f0c050;
+  --green:#2ecc71;
+  --red:#e74c3c;
+  --blue:#3498db;
+  --purple:#9b59b6;
+  --teal:#1abc9c;
+  --orange:#e67e22;
+  --text:#e8f0ff;
+  --muted:#7090b0;
+  --border:rgba(255,255,255,0.08);
+  --lock:#d4a574;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',sans-serif;overflow-x:hidden}
+
+/* ── 헤더 ── */
+.hdr{
+  background:linear-gradient(160deg,#071526 0%,#0d2240 60%,#0a1f3a 100%);
+  padding:20px 16px 0;
+  position:relative;overflow:hidden;
+}
+.hdr::before{
+  content:'';position:absolute;top:-40px;right:-40px;
+  width:200px;height:200px;border-radius:50%;
+  background:radial-gradient(circle,rgba(232,160,32,0.12) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hdr-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(232,160,32,0.15);border:1px solid rgba(232,160,32,0.35);
+  border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;
+  color:var(--accent);margin-bottom:12px;letter-spacing:0.5px;
+}
+.hdr-badge.demo{background:rgba(212,165,116,0.2);border-color:rgba(212,165,116,0.4);color:var(--lock)}
+.hdr-title{
+  font-size:22px;font-weight:900;line-height:1.2;
+  background:linear-gradient(135deg,#fff 0%,var(--accent2) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:4px;
+}
+.hdr-sub{font-size:12px;color:var(--muted);margin-bottom:16px;letter-spacing:0.3px}
+
+/* 진행률 바 */
+.progress-wrap{background:rgba(255,255,255,0.06);border-radius:6px;height:6px;margin-bottom:4px;overflow:hidden}
+.progress-bar{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--accent),var(--accent2));width:25%;animation:barLoad 1.2s ease-out}
+@keyframes barLoad{from{width:0}to{width:25%}}
+.progress-label{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);padding-bottom:14px}
+
+/* 탭 네비게이션 */
+.tab-nav{
+  display:flex;gap:0;background:rgba(0,0,0,0.3);
+  border-bottom:1px solid var(--border);overflow-x:auto;
+  scrollbar-width:none;
+}
+.tab-nav::-webkit-scrollbar{display:none}
+.tab-btn{
+  flex-shrink:0;padding:10px 14px;font-size:12px;font-weight:700;
+  color:var(--muted);background:none;border:none;cursor:pointer;
+  border-bottom:2px solid transparent;transition:all 0.2s;white-space:nowrap;
+}
+.tab-btn.on{color:var(--accent);border-bottom-color:var(--accent)}
+
+/* ── 바디 ── */
+.body{padding:14px 12px 90px}
+
+/* 섹션 공통 */
+.section{display:none}
+.section.on{display:block}
+
+/* ── 홈 화면 ── */
+.home-intro{
+  background:linear-gradient(135deg,rgba(26,58,104,0.8),rgba(15,42,74,0.9));
+  border:1px solid rgba(232,160,32,0.2);
+  border-radius:14px;padding:16px;margin-bottom:14px;
+}
+.home-intro h2{font-size:14px;font-weight:800;color:var(--accent);margin-bottom:8px}
+.home-intro p{font-size:12px;color:rgba(232,240,255,0.7);line-height:1.7;margin-bottom:10px}
+
+/* 데모 안내 배너 */
+.demo-banner{
+  background:linear-gradient(135deg,rgba(212,165,116,0.15),rgba(255,193,7,0.1));
+  border:2px solid var(--lock);
+  border-radius:14px;padding:16px;margin-bottom:14px;
+}
+.db-title{
+  display:flex;align-items:center;gap:8px;font  size:14px;font-weight:900;color:var(--lock);margin-bottom:10px;
+}
+.db-title span{font-size:20px}
+.db-text{font-size:12px;color:rgba(232,240,255,0.8);line-height:1.7;margin-bottom:8px}
+.db-cta{
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  border:none;border-radius:10px;padding:12px 16px;
+  color:#000;font-weight:800;font-size:12px;
+  cursor:pointer;width:100%;transition:transform 0.15s;
+}
+.db-cta:active{transform:scale(0.98)}
+
+/* 도메인 카드 */
+.domain-card{
+  border-radius:14px;padding:14px 12px;cursor:pointer;
+  border:1px solid rgba(255,255,255,0.08);
+  text-decoration:none;display:block;
+  transition:all 0.18s;
+  position:relative;overflow:hidden;
+}
+.domain-card::after{
+  content:'';position:absolute;inset:0;
+  background:rgba(255,255,255,0.04);opacity:0;transition:opacity 0.15s;
+}
+.domain-card:hover::after{opacity:1}
+
+/* 공개 카드 */
+.domain-card.open{background:linear-gradient(135deg,#1a2a5e,#0f1e4a)}
+.domain-card.open:active{transform:scale(0.97)}
+
+/* 잠금 카드 */
+.domain-card.locked{
+  background:linear-gradient(135deg,rgba(80,80,100,0.3),rgba(60,60,80,0.2));
+  border-color:rgba(212,165,116,0.3);
+  pointer-events:none;
+}
+
+.dc-icon{font-size:24px;margin-bottom:8px;display:block}
+.dc-code{font-size:10px;font-weight:800;color:#b8a6ff;margin-bottom:3px;letter-spacing:1px}
+.dc-title{font-size:13px;font-weight:800;line-height:1.3;margin-bottom:5px;color:#f5f7ff}
+.dc-sub{font-size:10px;color:#a8c5ff;line-height:1.5}
+.dc-tag{
+  display:inline-block;margin-top:6px;padding:3px 8px;
+  border-radius:10px;font-size:9px;font-weight:700;
+  background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);
+}
+
+/* 잠금 뱃지 */
+.lock-badge{
+  position:absolute;top:8px;right:8px;
+  background:var(--lock);color:#000;font-size:10px;font-weight:900;
+  padding:4px 8px;border-radius:8px;letter-spacing:0.5px;
+  display:flex;align-items:center;gap:4px;
+}
+.lock-badge::before{content:'🔒';font-size:12px}
+
+/* 업그레이드 배너 */
+.upgrade-banner{
+  background:linear-gradient(90deg,rgba(212,165,116,0.15),rgba(255,193,7,0.1));
+  border:1px solid rgba(212,165,116,0.3);border-radius:10px;
+  padding:10px 12px;margin-bottom:12px;
+  display:flex;align-items:center;gap:8px;
+}
+.ub-dot{width:8px;height:8px;border-radius:50%;background:var(--lock);flex-shrink:0;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.6;transform:scale(0.85)}}
+.ub-text{font-size:11px;color:rgba(232,240,255,0.8);line-height:1.5}
+.ub-text strong{color:var(--lock)}
+
+/* 하단 네비게이션 */
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;
+  background:rgba(7,21,38,0.95);backdrop-filter:blur(12px);
+  border-top:1px solid var(--border);
+  display:flex;z-index:100;
+}
+.bn-btn{
+  flex:1;padding:10px 4px 14px;display:flex;flex-direction:column;
+  align-items:center;gap:3px;background:none;border:none;
+  color:var(--muted);cursor:pointer;font-family:inherit;
+  transition:color 0.2s;
+}
+.bn-btn.on{color:var(--accent)}
+.bn-btn.disabled{opacity:0.4;cursor:default}
+.bn-icon{font-size:20px;line-height:1}
+.bn-label{font-size:9px;font-weight:700;letter-spacing:0.3px}
+
+/* 정보 카드 */
+.info-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:14px;padding:14px;margin-bottom:10px;
+}
+.info-card h3{font-size:13px;font-weight:800;color:var(--accent);margin-bottom:10px}
+.info-table{width:100%;border-collapse:collapse}
+.info-table td{padding:7px 8px;font-size:12px;border-bottom:1px solid rgba(255,255,255,0.05)}
+.info-table td:first-child{color:var(--muted);font-weight:700;width:40%;white-space:nowrap}
+.info-table td:last-child{color:var(--text)}
+.info-table tr:last-child td{border-bottom:none}
+
+/* 칩 */
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{
+  padding:4px 10px;border-radius:20px;font-size:10px;font-weight:700;
+  background:rgba(255,255,255,0.08);color:rgba(232,240,255,0.8);
+}
+
+/* 모달 */
+.modal{
+  position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(6px);
+  display:flex;align-items:flex-end;z-index:200;opacity:0;pointer-events:none;
+  transition:opacity 0.2s;
+}
+.modal.on{opacity:1;pointer-events:auto}
+.modal-content{
+  background:var(--bg);width:100%;border-radius:20px 20px 0 0;
+  padding:24px 16px 32px;animation:slideUp 0.3s ease-out;
+}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-title{
+  font-size:18px;font-weight:900;color:#fff;margin-bottom:12px;
+}
+.modal-text{
+  font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:16px;
+}
+.modal-list{list-style:none}
+.modal-list li{
+  padding:10px 12px;background:var(--card);border-radius:10px;
+  margin-bottom:8px;font-size:12px;color:#fff;
+}
+.modal-list li span{color:var(--accent);font-weight:700}
+.modal-btn{
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  border:none;border-radius:12px;padding:14px;
+  width:100%;color:#000;font-weight:900;font-size:13px;
+  cursor:pointer;margin-top:12px;transition:transform 0.15s;
+}
+.modal-btn:active{transform:scale(0.98)}
+</style>
+</head>
+<body>
+
+<!-- 헤더 -->
+<div class="hdr">
+  <div class="hdr-badge demo">🔓 DEMO VERSION</div>
+  <div class="hdr-title">건설안전기술사</div>
+  <div class="hdr-sub">D01 법령체계 · 무료 데모 · 더 많은 콘텐츠는 풀버전에서</div>
+  <div class="progress-wrap"><div class="progress-bar"></div></div>
+  <div class="progress-label"><span>데모 콘텐츠</span><span>D01 공개 · D02~D08 준비중</span></div>
+  <div class="tab-nav">
+    <button class="tab-btn on" onclick="goTab('home',this)">🏠 홈</button>
+    <button class="tab-btn" onclick="goTab('demo',this)">📚 데모</button>
+    <button class="tab-btn" onclick="goTab('info',this)">📋 정보</button>
+  </div>
+</div>
+
+<!-- 바디 -->
+<div class="body">
+
+  <!-- ★ 홈 탭 -->
+  <div id="home" class="section on">
+
+    <div class="demo-banner">
+      <div class="db-title">
+        <span>🔓</span>
+        <div>무료 데모 버전</div>
+      </div>
+      <div class="db-text">
+        <strong>D01 법령체계</strong>만 무료로 체험할 수 있습니다.<br/>
+        나머지 D02~D08 (재해이론, 위험성평가, 공종별안전, 건설기계, 안전관리, 사고사례) 등 전체 콘텐츠는 <strong>풀 버전</strong>에서 제공됩니다.
+      </div>
+      <button class="db-cta" onclick="openModal('upgrade')">
+        🎁 풀 버전 안내 보기
+      </button>
+    </div>
+
+    <div class="home-intro">
+      <h2>이 앱은 어떤 앱인가요?</h2>
+      <p>
+        <strong>건설안전기술사 필기시험</strong>을 합격하기 위한 <strong>핵심 암기 시스템</strong>입니다.
+        <br/><br/>
+        ✓ 6대 출제영역 모두 커버<br/>
+        ✓ 법령 조문 + 재해이론 + 위험성평가 + 공종별안전 + 건설기계 + 산업보건<br/>
+        ✓ 두문자 암기법 제공<br/>
+        ✓ 스마트폰 앱으로 언제 어디서나 학습
+      </p>
+    </div>
+
+    <div class="upgrade-banner">
+      <div class="ub-dot"></div>
+      <div class="ub-text">
+        <strong>데모 버전</strong>은 D01 법령만 포함됩니다. 전체 학습을 위해 <strong>풀 버전 업그레이드</strong>를 추천합니다.
+      </div>
+    </div>
+
+    <!-- 콘텐츠 그리드 -->
+    <h3 style="font-size:14px;font-weight:800;margin-bottom:12px;color:rgba(232,240,255,0.8)">📚 학습 콘텐츠</h3>
+
+    <!-- D01 공개 -->
+    <a href="d01.html" class="domain-card open">
+      <span class="dc-icon">⚖️</span>
+      <div class="dc-code">D01</div>
+      <div class="dc-title">법령체계</div>
+      <div class="dc-sub">산안법 · 중처법 · 건진법</div>
+      <span class="dc-tag">🔓 무료 공개</span>
+    </a>
+
+    <style>
+      .domain-grid-locked{
+        display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;
+      }
+    </style>
+
+    <div class="domain-grid-locked">
+      <!-- D02 잠금 -->
+      <div class="domain-card locked">
+        <div class="lock-badge">LOCKED</div>
+        <span class="dc-icon">🔬</span>
+        <div class="dc-code">D02</div>
+        <div class="dc-title">재해이론</div>
+        <div class="dc-sub">하인리히·버드</div>
+        <span class="dc-tag">🔒 풀버전</span>
+      </div>
+
+      <!-- D03 잠금 -->
+      <div class="domain-card locked">
+        <div class="lock-badge">LOCKED</div>
+        <span class="dc-icon">⚠️</span>
+        <div class="dc-code">D03</div>
+        <div class="dc-title">위험성평가</div>
+        <div class="dc-sub">2023개정·FMEA·FTA</div>
+        <span class="dc-tag">🔒 풀버전</span>
+      </div>
+
+      <!-- D04 잠금 -->
+      <div class="domain-card locked">
+        <div class="lock-badge">LOCKED</div>
+        <span class="dc-icon">📊</span>
+        <div class="dc-code">D04</div>
+        <div class="dc-title">재해통계</div>
+        <div class="dc-sub">4대재해·재해율</div>
+        <span class="dc-tag">🔒 풀버전</span>
+      </div>
+
+      <!-- D05 잠금 -->
+      <div class="domain-card locked">
+        <div class="lock-badge">LOCKED</div>
+        <span class="dc-icon">🏗️</span>
+        <div class="dc-code">D05</div>
+        <div class="dc-title">공종별안전</div>
+        <div class="dc-sub">가설·굴착·콘크리트</div>
+        <span class="dc-tag">🔒 풀버전</span>
+      </div>
+
+      <!-- D06 잠금 -->
+      <div class="domain-card locked">
+        <div class="lock-badge">LOCKED</div>
+        <span class="dc-icon">🏗️</span>
+        <div class="dc-code">D06</div>
+        <div class="dc-title">건설기계·양중</div>
+        <div class="dc-sub">타워크레인·로프</div>
+        <span class="dc-tag">🔒 풀버전</span>
+      </div>
+
+      <!-- D07 잠금 -->
+      <div class="domain-card locked">
+        <div class="lock-badge">LOCKED</div>
+        <span class="dc-icon">📋</span>
+        <div class="dc-code">D07</div>
+        <div class="dc-title">안전관리</div>
+        <div class="dc-sub">교육·관리비·TBM</div>
+        <span class="dc-tag">🔒 풀버전</span>
+      </div>
+
+      <!-- D08 잠금 -->
+      <div class="domain-card locked">
+        <div class="lock-badge">LOCKED</div>
+        <span class="dc-icon">🔥</span>
+        <div class="dc-code">D08</div>
+        <div class="dc-title">사고사례·보건</div>
+        <div class="dc-sub">전기·화재·밀폐</div>
+        <span class="dc-tag">🔒 풀버전</span>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <h3>🎁 풀 버전에 포함된 내용</h3>
+      <div class="chips">
+        <span class="chip">✓ 8개 도메인 모두</span>
+        <span class="chip">✓ 암기법 총정리</span>
+        <span class="chip">✓ 전체 숲 구조도</span>
+        <span class="chip">✓ 오프라인 학습</span>
+        <span class="chip">✓ PWA 앱 설치</span>
+        <span class="chip">✓ 추가 자료</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ★ 데모 탭 -->
+  <div id="demo" class="section">
+    <div style="font-size:12px;color:var(--muted);margin-bottom:12px">무료로 공개된 콘텐츠를 확인하세요.</div>
+
+    <a href="d01.html" style="display:block;text-decoration:none;margin-bottom:10px">
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font-size:28px">⚖️</span>
+          <div>
+            <div style="font-size:13px;font-weight:800;color:#f5f7ff;margin-bottom:3px">D01 · 법령체계</div>
+            <div style="font-size:11px;color:var(--muted)">산업안전보건법 / 중대재해처벌법 / 건설기술진흥법</div>
+          </div>
+        </div>
+      </div>
+    </a>
+
+    <div style="background:linear-gradient(135deg,rgba(212,165,116,0.15),rgba(255,193,7,0.1));border:2px solid var(--lock);border-radius:14px;padding:14px;text-align:center">
+      <div style="font-size:14px;font-weight:900;color:var(--lock);margin-bottom:8px">🔒 나머지 콘텐츠는 잠금 상태</div>
+      <div style="font-size:11px;color:rgba(232,240,255,0.7);margin-bottom:12px">D02~D08 전체 학습을 위해 풀 버전으로 업그레이드하세요.</div>
+      <button class="db-cta" onclick="openModal('upgrade')" style="width:100%">
+        풀 버전 알아보기
+      </button>
+    </div>
+  </div>
+
+  <!-- ★ 정보 탭 -->
+  <div id="info" class="section">
+
+    <div class="info-card">
+      <h3>📌 이 앱의 특징</h3>
+      <table class="info-table">
+        <tr><td>학습 대상</td><td>건설안전기술사 필기시험 수험생</td></tr>
+        <tr><td>커버 영역</td><td>6대 출제영역 모두 포함</td></tr>
+        <tr><td>암기 지원</td><td>두문자·핵심 숫자 정리</td></tr>
+        <tr><td>법령 기준</td><td>2026년 3월 최신 기준</td></tr>
+        <tr><td>접근 방식</td><td>스마트폰 PWA 앱</td></tr>
+      </table>
+    </div>
+
+    <div class="info-card">
+      <h3>🔓 데모 버전 vs 풀 버전</h3>
+      <table class="info-table">
+        <tr>
+          <td style="font-weight:700">항목</td>
+          <td style="text-align:center;font-weight:700;color:var(--muted)">데모</td>
+          <td style="text-align:center;font-weight:700;color:var(--accent)">풀버전</td>
+        </tr>
+        <tr>
+          <td>D01 법령체계</td>
+          <td style="text-align:center">✓</td>
+          <td style="text-align:center;color:var(--accent)">✓</td>
+        </tr>
+        <tr>
+          <td>D02~D08</td>
+          <td style="text-align:center">✗</td>
+          <td style="text-align:center;color:var(--accent)">✓</td>
+        </tr>
+        <tr>
+          <td>전체 숲</td>
+          <td style="text-align:center">✗</td>
+          <td style="text-align:center;color:var(--accent)">✓</td>
+        </tr>
+        <tr>
+          <td>암기법 정리</td>
+          <td style="text-align:center">✗</td>
+          <td style="text-align:center;color:var(--accent)">✓</td>
+        </tr>
+        <tr>
+          <td>오프라인 사용</td>
+          <td style="text-align:center">✗</td>
+          <td style="text-align:center;color:var(--accent)">✓</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="info-card">
+      <h3>💬 피드백</h3>
+      <div style="font-size:12px;color:var(--muted);line-height:1.8">
+        데모 버전을 사용해보신 후 어떤 생각이 드시나요?<br/>
+        개선사항이나 건의사항은 아래 연락처로 알려주세요.<br/>
+        <br/>
+        📧 이메일 또는 📱 카카오톡으로 소식을 받을 수 있습니다.
+      </div>
+    </div>
+
+  </div>
+
+</div><!-- /body -->
+
+<!-- 업그레이드 모달 -->
+<div id="upgradeModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-title">🎁 풀 버전 업그레이드</div>
+    <div class="modal-text">
+      <strong>전체 8개 도메인</strong> + 암기법 + 숲 구조도를 학습할 수 있습니다.
+    </div>
+
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:12px">
+      <div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:8px">풀 버전 포함 내용</div>
+      <ul class="modal-list">
+        <li>✓ <span>D01~D08</span> 8개 전 도메인</li>
+        <li>✓ <span>전체 숲 구조도</span> (6대 출제영역 한눈에)</li>
+        <li>✓ <span>암기법 정리</span> (두문자·핵심숫자)</li>
+        <li>✓ <span>오프라인 학습</span> (인터넷 없이 사용)</li>
+        <li>✓ <span>PWA 앱 설치</span> (바탕화면 아이콘)</li>
+        <li>✓ <span>2026년 최신 법령</span> 적용</li>
+      </ul>
+    </div>
+
+    <div style="background:rgba(232,160,32,0.1);border:1px solid rgba(232,160,32,0.3);border-radius:12px;padding:12px;margin-bottom:14px;text-align:center">
+      <div style="font-size:16px;font-weight:900;color:var(--accent);margin-bottom:3px">준비중</div>
+      <div style="font-size:11px;color:var(--muted)">곧 출시될 예정입니다.<br/>소식을 받으시려면 아래 버튼을 클릭하세요.</div>
+    </div>
+
+    <button class="modal-btn" onclick="openNotificationForm()">
+      📬 출시 알림 받기
+    </button>
+    <button class="modal-btn" style="background:rgba(255,255,255,0.1);color:#fff;margin-top:8px;border:1px solid var(--border)" onclick="closeModal('upgrade')">
+      닫기
+    </button>
+  </div>
+</div>
+
+<!-- 하단 네비게이션 -->
+<nav class="bottom-nav">
+  <button class="bn-btn on" onclick="goTab('home',this)">
+    <span class="bn-icon">🏠</span><span class="bn-label">홈</span>
+  </button>
+  <button class="bn-btn" onclick="goTab('demo',this)">
+    <span class="bn-icon">📚</span><span class="bn-label">데모</span>
+  </button>
+  <button class="bn-btn" onclick="goTab('info',this)">
+    <span class="bn-icon">📋</span><span class="bn-label">정보</span>
+  </button>
+  <button class="bn-btn" onclick="openModal('upgrade')">
+    <span class="bn-icon">🎁</span><span class="bn-label">업그</span>
+  </button>
+</nav>
+
+<script>
+// 탭 전환
+function goTab(id, el) {
+  document.querySelectorAll('.section').forEach(function(s){s.classList.remove('on')});
+  document.getElementById(id).classList.add('on');
+  document.querySelectorAll('.bn-btn').forEach(function(b){b.classList.remove('on')});
+  if(el) el.classList.add('on');
+  window.scrollTo(0,0);
+}
+
+// 모달
+function openModal(name) {
+  document.getElementById(name+'Modal').classList.add('on');
+}
+function closeModal(name) {
+  document.getElementById(name+'Modal').classList.remove('on');
+}
+
+// 알림 수령
+function openNotificationForm() {
+  alert('곧 출시될 예정입니다.\n풀 버전 출시 소식을 받으려면\n개발자에게 연락해주세요.');
+}
+
+// 배경 터치 모달 닫기
+document.querySelectorAll('.modal').forEach(function(m) {
+  m.addEventListener('click', function(e) {
+    if(e.target === this) closeModal(this.id.replace('Modal',''));
+  });
+});
+</script>
+</body>
+</html>
