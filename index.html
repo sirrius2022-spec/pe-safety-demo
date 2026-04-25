@@ -100,7 +100,7 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'A
   border-radius:14px;padding:16px;margin-bottom:14px;
 }
 .db-title{
-  display:flex;align-items:center;gap:8px;font  size:14px;font-weight:900;color:var(--lock);margin-bottom:10px;
+  display:flex;align-items:center;gap:8px;font-size:14px;font-weight:900;color:var(--lock);margin-bottom:10px;
 }
 .db-title span{font-size:20px}
 .db-text{font-size:12px;color:rgba(232,240,255,0.8);line-height:1.7;margin-bottom:8px}
@@ -236,6 +236,16 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'A
   cursor:pointer;margin-top:12px;transition:transform 0.15s;
 }
 .modal-btn:active{transform:scale(0.98)}
+
+/* 푸터 */
+.footer-section{
+  padding:16px 12px;text-align:center;border-top:1px solid var(--border);
+  margin-bottom:70px;margin-top:24px;color:var(--muted);
+}
+.footer-brand{font-size:11px;margin-bottom:6px}
+.footer-brand strong{color:var(--accent);font-weight:800}
+.footer-email{font-size:11px;color:var(--accent);text-decoration:none;font-weight:700;letter-spacing:0.3px;display:inline-block}
+.footer-copyright{font-size:10px;color:rgba(255,255,255,0.3);margin-top:8px}
 </style>
 </head>
 <body>
@@ -518,6 +528,13 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'A
       닫기
     </button>
   </div>
+</div>
+
+<!-- 푸터 -->
+<div class="footer-section">
+  <div class="footer-brand">Edit by <strong>마트일사천리</strong></div>
+  <a href="mailto:sirrius@naver.com" class="footer-email">📧 sirrius@naver.com</a>
+  <div class="footer-copyright">© 2026 마트일사천리. All rights reserved.</div>
 </div>
 
 <!-- 하단 네비게이션 -->
